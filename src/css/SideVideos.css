@@ -1,0 +1,36 @@
+.mainwrapper {
+  display: flex;
+  text-decoration: none;
+}
+.image {
+  position: relative;
+}
+.image > img {
+  width: 170px;
+  height: 95px;
+}
+.vduration {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: black;
+  color: aliceblue;
+  padding: 0px 5px;
+}
+.vinfo {
+  margin-left: 10px;
+}
+.title {
+  color: black;
+  font-size: 1.2em;
+}
+.channel {
+  color: black;
+  opacity: 0.8;
+  margin-top: 10px;
+}
+.views {
+  color: black;
+  opacity: 0.8;
+  margin-top: 10px;
+}

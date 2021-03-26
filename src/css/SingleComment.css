@@ -1,0 +1,36 @@
+.outerbox {
+  position: relative;
+  margin-bottom: 10px;
+  border-bottom: 2px solid lightgray;
+  padding: 5px 5px 5px 20px;
+}
+.secondbox {
+  display: flex;
+  margin-bottom: 10px;
+}
+.secondbox > img {
+  width: 2.5em;
+  border-radius: 50%;
+}
+.thirdbox {
+  margin-left: 10px;
+}
+.comcontent {
+  margin-bottom: 10px;
+}
+.fourthbox {
+  display: flex;
+}
+.reply {
+  margin-left: 12px;
+}
+.cmntform {
+  display: flex;
+}
+.cmntform > textarea {
+  width: 100%;
+  border-radius: 5px;
+}
+.cmntform > button {
+  margin-left: 10px;
+}

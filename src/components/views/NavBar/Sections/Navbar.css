@@ -1,0 +1,58 @@
+/* @import '~antd/dist/antd.css'; */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.menu {
+  padding: 0 20px;
+  border-bottom: solid 1px #e8e8e8;
+  overflow: auto;
+  box-shadow: 0 0 30px #f3f1f1;
+  background-color: white;
+  display: flex;
+}
+.humburgermenu {
+  margin-top: 19px;
+  margin-left: 10px;
+  font-size: 1.5em;
+}
+.menu__logo {
+  width: 150px;
+  margin-top: 15px;
+  margin-left: 10px;
+}
+
+.menu__logo a {
+  font-size: 20px;
+}
+
+.menu__container {
+  display: flex;
+
+  margin-top: 5px;
+  margin-left: 10px;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.menu_left {
+}
+
+.menu_rigth {
+}
+
+@media (max-width: 767px) {
+  .menu_left,
+  .menu_rigth {
+    display: none;
+  }
+
+  .menu__logo a {
+    margin-left: -20px;
+  }
+
+  .menu__logo a {
+    padding: 10px 20px;
+  }
+}

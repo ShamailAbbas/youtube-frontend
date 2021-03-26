@@ -1,0 +1,19 @@
+.commentheading {
+  margin-left: 2em;
+  font-size: 1.2em;
+}
+.commentform {
+  display: flex;
+}
+.textarea {
+  border: none;
+  margin-left: 4.5em;
+  margin-top: 1em;
+  width: 80%;
+}
+.btn {
+  border: none;
+  margin-right: 10px;
+  margin-left: 10px;
+  background: transparent;
+}
