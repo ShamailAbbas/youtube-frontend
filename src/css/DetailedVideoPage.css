@@ -25,6 +25,7 @@
 }
 .sidevideos {
   flex: 0.33;
+  margin-left: 15px;
 }
 .belowvideo {
   display: flex;

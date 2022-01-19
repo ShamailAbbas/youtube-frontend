@@ -7,14 +7,20 @@
   padding: 1em 2em;
   background-color: whitesmoke;
   margin-left: 18vw;
+  box-shadow: 3px 3px 3px rgba(5, 150, 24, 0.123),
+    3px 3px 3px rgba(199, 11, 11, 0.137);
+}
+.videobox:hover {
+  transform: scale(1.05);
 }
 .videobox {
   border: 2px solid rgba(0, 0, 0, 0.065);
+  transition-duration: 0.1s;
 }
 .imgplustitle {
   display: flex;
   margin: 5px;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 }
 .imgplustitle > img {
   max-width: 35px;
@@ -26,6 +32,8 @@
 .thumbnail {
   width: 100%;
   height: 150px;
+  box-shadow: 3px 3px 3px rgba(5, 150, 24, 0.123),
+    3px 3px 3px rgba(199, 11, 11, 0.137);
 }
 .thumbnailcontainer {
   position: relative;

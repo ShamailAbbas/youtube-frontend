@@ -1,9 +1,8 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { FaUpload } from 'react-icons/fa'
-
 import { useSelector } from 'react-redux'
-import Upload from '../../../../assets/images/upload.png'
+
 
 function RightMenu(props) {
   const user = useSelector((state) => state.user.loginSuccess)
@@ -13,12 +12,12 @@ function RightMenu(props) {
     return (
       <div>
         <div style={{ display: 'flex', margin: '1em', flexDirection: 'row' }}>
-          <p style={{ margin: '.5em .5em' }}>
+          <p style={{ margin: '.5em .5em', fontSize:"15px" }}>
             Hello <strong>{username}</strong>
           </p>
           <div style={{ margin: '.3em .5em' }}>
             <a href='/video/upload'>
-              <FaUpload style={{ fontSize: '1.5em', color: 'blue' }} />
+              <FaUpload style={{ fontSize: '1.5em', color: 'gray' }} />
             </a>
           </div>
           <div style={{ margin: '0em .5em' }}>

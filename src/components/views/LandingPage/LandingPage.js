@@ -4,6 +4,8 @@ import axios from 'axios'
 import moment from 'moment'
 import Sidebar from '../Sidebar/Sidebar'
 import url from '../../../url'
+import Videocard from '../../videocard'
+
 function LandingPage() {
   const [Videos, setVideos] = useState([])
   const [Loading, setLoading] = useState(true)
@@ -11,6 +13,7 @@ function LandingPage() {
     const fetch = async () => {
       await axios.get(`${url}/video/getVideos`).then((response) => {
         if (response.data.success) {
+          console.log(response)
           setVideos(response.data.videos)
           setLoading(false)
         } else {
@@ -29,40 +32,16 @@ function LandingPage() {
   }
 
   const renderCards = Videos.map((video, index) => {
-    var minutes = Math.floor(video.duration / 60)
-    var seconds = Math.floor(video.duration - minutes * 60)
-
+    var hours = Math.floor(video.duration / 3600)
+    let secleft=video.duration-hours*3600
+    var minutes = Math.floor(secleft / 60)
+    secleft=secleft-minutes*60
+    var seconds = Math.floor(secleft)
+console.log("trimmed... ",video.title.slice(0,20))
     return (
-      <>
-        <div className='videobox'>
-          <div className='thumbnailcontainer'>
-            <a href={`/video/${video._id}`}>
-              <img
-                className='thumbnail'
-                alt='thumbnail'
-                src={`${url}/${video.thumbnail}`}
-              />
-              <p className=' duration'>
-                {minutes} : {seconds}
-              </p>
-            </a>
-          </div>
-          <div className='imgplustitle'>
-            <img src={video.writer.image} alt='' />
-            <h4>{video.title}</h4>
-            <div>
-              <h1 style={{ lineHeight: '6px', opacity: '.6' }}>.</h1>
-              <h1 style={{ lineHeight: '6px', opacity: '.6' }}>.</h1>
-              <h1 style={{ lineHeight: '6px', opacity: '.6' }}>.</h1>
-            </div>
-          </div>
-          <div style={{ marginLeft: '60px' }}>{video.writer?.name}</div>
-          <div style={{ display: 'flex', marginLeft: '60px' }}>
-            <p style={{ marginRight: '10px' }}>Views {video.views}</p>
-            <p> {moment(video.createdAt).format('MMM Do YY')} </p>
-          </div>
-        </div>
-      </>
+      <Videocard
+      video={video} hours={hours} minutes={minutes} seconds={seconds}
+      ></Videocard>
     )
   })
 

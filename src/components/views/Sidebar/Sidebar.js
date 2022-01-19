@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import {
   FaHome,
   FaHistory,
@@ -11,22 +12,28 @@ import {
   FaGamepad,
   FaFootballBall,
 } from 'react-icons/fa'
+
+
 const Sidebar = () => {
   return (
     <div style={{ opacity: '.9' }}>
+      <Link to="/" style={{textDecoration:"none"}}>
       <h4 style={{ margin: '2em ' }}>
         <FaHome style={{ marginRight: '2em ', fontSize: '1.5em' }} />
         Home
       </h4>
+      </Link>
       <h4 style={{ margin: '2em ' }}>
         <FaFire style={{ marginRight: '2em ', fontSize: '1.5em' }} />
         Trending
       </h4>
       <hr style={{ opacity: '.4' }} />
-      <h4 style={{ margin: '2em ' }}>
+      <Link to="/subscriptions" style={{textDecoration:"none"}}
+      > <h4 style={{ margin: '2em ' }} >
         <FaYoutube style={{ marginRight: '2em ', fontSize: '1.5em' }} />
         Subscribtions
-      </h4>
+      </h4></Link>
+     
       <h4 style={{ margin: '2em ' }}>
         <FaDatabase style={{ marginRight: '2em ', fontSize: '1.5em' }} />
         Analytics
@@ -56,6 +63,7 @@ const Sidebar = () => {
         <FaGamepad style={{ marginRight: '2em ', fontSize: '1.5em' }} />
         Game
       </h4>
+      
     </div>
   )
 }

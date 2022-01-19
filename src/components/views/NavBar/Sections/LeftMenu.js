@@ -18,7 +18,7 @@ function LeftMenu(props) {
       </a>
 
       <a
-        href='/subscription'
+        href='/subscriptions'
         style={{
           textDecoration: 'none',
           marginRight: '.5em',
@@ -27,7 +27,7 @@ function LeftMenu(props) {
           color: '#3f3f3f',
         }}
       >
-        Subscription
+        Subscriptions
       </a>
     </div>
   )

@@ -1,145 +1,157 @@
-import React, { useState } from 'react'
-
-import Dropzone from 'react-dropzone'
-import axios from 'axios'
-import { useSelector } from 'react-redux'
-import url from '../../../url'
+import React, { useState } from "react";
+import Dropzone from "react-dropzone";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import url from "../../../url";
+import Defaultthumbnail from "../../../assets/images/Defaultthumbnail.jpg";
+import { Route } from "react-router-dom/cjs/react-router-dom.min";
 const Private = [
-  { value: 0, label: 'Private' },
-  { value: 1, label: 'Public' },
-]
+  { value: 0, label: "Private" },
+  { value: 1, label: "Public" },
+];
 
 const Catogory = [
-  { value: 0, label: 'Film & Animation' },
-  { value: 0, label: 'Autos & Vehicles' },
-  { value: 0, label: 'Music' },
-  { value: 0, label: 'Pets & Animals' },
-  { value: 0, label: 'Sports' },
-]
+  { value: 0, label: "Film & Animation" },
+  { value: 0, label: "Autos & Vehicles" },
+  { value: 0, label: "Music" },
+  { value: 0, label: "Pets & Animals" },
+  { value: 0, label: "Sports" },
+];
 
 function UploadVideoPage(props) {
-  const user = useSelector((state) => state.user)
-
-  const [title, setTitle] = useState('')
-  const [Description, setDescription] = useState('')
-  const [privacy, setPrivacy] = useState(0)
-  const [Categories, setCategories] = useState('Film & Animation')
-  const [FilePath, setFilePath] = useState('')
-  const [Duration, setDuration] = useState('')
-  const [Thumbnail, setThumbnail] = useState('')
+  const user = useSelector((state) => state.user);
+  const [selectedvideo, setselectedvideo] = useState("");
+  const [selectedthumbnail, setselectedthumbnail] = useState("");
+  const [title, setTitle] = useState("");
+  const [Description, setDescription] = useState("");
+  const [privacy, setPrivacy] = useState(0);
+  const [Categories, setCategories] = useState("Film & Animation");
+  const [Duration, setDuration] = useState("0:06");
+  const [uploading, setuploading] = useState(false);
 
   const handleChangeTitle = (event) => {
-    setTitle(event.currentTarget.value)
-  }
+    setTitle(event.currentTarget.value);
+  };
 
   const handleChangeDecsription = (event) => {
-    console.log(event.currentTarget.value)
+    console.log(event.currentTarget.value);
 
-    setDescription(event.currentTarget.value)
-  }
+    setDescription(event.currentTarget.value);
+  };
 
   const handleChangeOne = (event) => {
-    setPrivacy(event.currentTarget.value)
-  }
+    setPrivacy(event.currentTarget.value);
+  };
 
   const handleChangeTwo = (event) => {
-    setCategories(event.currentTarget.value)
-  }
+    setCategories(event.currentTarget.value);
+  };
 
   const onSubmit = (event) => {
-    event.preventDefault()
+    setuploading(true);
+    event.preventDefault();
 
     if (
-      title === '' ||
-      Description === '' ||
-      Categories === '' ||
-      FilePath === '' ||
-      Duration === '' ||
-      Thumbnail === ''
+      title === "" ||
+      Description === "" ||
+      Categories === "" ||
+      selectedvideo === "" ||
+      Duration === "" ||
+      selectedthumbnail === ""
     ) {
-      return alert('Please first fill all the fields')
+      return alert("Please first fill all the fields");
     }
 
-    const variables = {
-      writer: user.userData._id,
-      title: title,
-      description: Description,
-      privacy: privacy,
-      filePath: FilePath,
-      category: Categories,
-      duration: Duration,
-      thumbnail: Thumbnail,
-    }
-
-    axios.post(`${url}/video/uploadVideo`, variables).then((response) => {
-      if (response.data.success) {
-        alert('video Uploaded Successfully')
-        props.history.push('/')
-      } else {
-        alert('Failed to upload video')
-      }
-    })
-  }
-
-  const onDrop = (files) => {
-    let formData = new FormData()
+    //....................................................
+    let formData = new FormData();
     const config = {
-      header: { 'content-type': 'multipart/form-data' },
-    }
-    console.log(files)
-    formData.append('file', files[0])
+      header: { "content-type": "multipart/form-data" },
+    };
+    console.log(
+      "The selected file's details are ",
+      selectedvideo,
+      "the selected image is ",
+      selectedthumbnail
+    );
+
+    formData.append("video", selectedvideo);
 
     axios
-      .post(`${url}/video/uploadfiles/`, formData, config)
+      .post(`${url}/upload/uploadvideo/`, formData, config)
       .then((response) => {
-        console.log(response)
+        console.log(
+          "The response after trying to upload the video is ",
+          response
+        );
         if (response.data.success) {
-          let variable = {
-            filePath: response.data.filePath,
-            fileName: response.data.fileName,
-          }
-          setFilePath(response.data.filePath)
+          console.log(response.data);
 
-          //gerenate thumbnail with this filepath !
+          const details = new FormData();
+          details.append("writer", user.userData._id);
+          details.append("filePath", response.data.filePath);
+          details.append("fileName", response.data.fileName);
+          details.append("thumbnail", selectedthumbnail);
+          details.append("title", title);
+          details.append("description", Description);
+          details.append("privacy", privacy);
+          details.append("category", Categories);
+          details.append("duration", Duration);
 
-          axios.post(`${url}/video/thumbnail/`, variable).then((response) => {
-            if (response.data.success) {
-              setDuration(response.data.fileDuration)
-              setThumbnail(response.data.thumbsFilePath)
-            } else {
-              alert('Failed to make the thumbnails')
-            }
-          })
-        } else {
-          alert('failed to save the video in server')
+          axios
+            .post(`${url}/upload/uploadthumbnail/`, details, config)
+            .then((response) => {
+              console.log(
+                "The response after trying to upload the video is ",
+                response
+              );
+              if (response.data.success) {
+                console.log(response.data);
+                alert("Uploading Successfully");
+                props.history.push("/");
+                setuploading(false);
+              } else {
+                alert("Failed to Upload the Video");
+                setuploading(false);
+              }
+            });
         }
-      })
-  }
-
+      });
+  };
+  const onVideoDrop = (files) => {
+    setselectedvideo(files[0]);
+  };
+  const onImageDrop = (files) => {
+    setselectedthumbnail(files[0]);
+  };
   return (
     <div
       style={{
-        maxWidth: '350px',
-        margin: '2rem auto',
-        padding: '1em',
-        border: '2px solid lightgray',
+        maxWidth: "350px",
+        margin: ".8rem auto",
+        padding: "1em",
+        border: "2px solid lightgray",
+        borderRadius: "10px",
+        boxShadow: "3px 3px 3px rgba(5, 150, 24, 0.123)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <div style={{ textAlign: 'center', marginBottom: '2rem' }}></div>
+      <div style={{ textAlign: "center", marginBottom: "2rem" }}></div>
 
       <form onSubmit={onSubmit}>
         <div>
-          <Dropzone onDrop={onDrop} multiple={false} maxSize={800000000}>
+          <Dropzone onDrop={onVideoDrop} multiple={false} maxSize={800000000}>
             {({ getRootProps, getInputProps }) => (
               <div
                 style={{
-                  width: '300px',
-                  height: '100px',
-                  border: '1px solid gray',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '1em',
+                  width: "300px",
+                  height: "100px",
+                  border: "1px solid gray",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "1em",
                 }}
                 {...getRootProps()}
               >
@@ -149,10 +161,42 @@ function UploadVideoPage(props) {
             )}
           </Dropzone>
 
-          {Thumbnail !== '' && (
-            <div>
+          {selectedvideo !== "" && (
+            <div
+              style={{
+                color: "green",
+              }}
+            >
               Video Selected
-              {/* <img src={`http://localhost:5000/${Thumbnail}`} alt='haha' /> */}
+            </div>
+          )}
+          <Dropzone onDrop={onImageDrop} multiple={false} maxSize={800000000}>
+            {({ getRootProps, getInputProps }) => (
+              <div
+                style={{
+                  marginTop: "20px",
+                  width: "300px",
+                  height: "50px",
+                  border: "1px solid gray",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "1em",
+                }}
+                {...getRootProps()}
+              >
+                Drag and drop an image for thumbnail here or click to choose one
+                <input {...getInputProps()} />
+              </div>
+            )}
+          </Dropzone>
+          {selectedthumbnail !== "" && (
+            <div
+              style={{
+                color: "green",
+              }}
+            >
+              Thumbnail Selected
             </div>
           )}
         </div>
@@ -162,28 +206,28 @@ function UploadVideoPage(props) {
 
         <input
           style={{
-            padding: '.5em 1em',
-            margin: '0',
-            width: '300px',
+            padding: ".5em 1em",
+            margin: "0",
+            width: "300px",
           }}
           onChange={handleChangeTitle}
           value={title}
-          placeholder='Title'
+          placeholder="Title"
         />
         <br />
         <br />
 
         <textarea
-          style={{ padding: '.5em 1em', margin: '0', width: '300px' }}
+          style={{ padding: ".5em 1em", margin: "0", width: "300px" }}
           onChange={handleChangeDecsription}
           value={Description}
-          placeholder='Description'
+          placeholder="Description"
         />
         <br />
         <br />
 
         <select
-          style={{ padding: '.5em 1em', margin: '0', width: '300px' }}
+          style={{ padding: ".5em 1em", margin: "0", width: "300px" }}
           onChange={handleChangeOne}
         >
           {Private.map((item, index) => (
@@ -196,7 +240,7 @@ function UploadVideoPage(props) {
         <br />
 
         <select
-          style={{ padding: '.5em 1em', margin: '0', width: '300px' }}
+          style={{ padding: ".5em 1em", margin: "0", width: "300px" }}
           onChange={handleChangeTwo}
         >
           {Catogory.map((item, index) => (
@@ -210,21 +254,22 @@ function UploadVideoPage(props) {
 
         <button
           style={{
-            padding: '.5em 1em',
-            margin: '0',
-            width: '300px',
-            border: 'transparent',
-            borderRadius: '20px',
-            backgroundColor: '#3f3f3f',
-            color: 'white',
+            padding: ".5em 1em",
+            margin: "0",
+            width: "300px",
+            border: "transparent",
+            borderRadius: "20px",
+            backgroundColor: "#3f3f3f",
+            color: "white",
           }}
           onClick={onSubmit}
+          disabled={uploading}
         >
-          Upload
+          {uploading ? "Uploading..." : "Upload"}
         </button>
       </form>
     </div>
-  )
+  );
 }
 
-export default UploadVideoPage
+export default UploadVideoPage;
